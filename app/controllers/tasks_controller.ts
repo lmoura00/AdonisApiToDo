@@ -22,7 +22,7 @@ export default class TasksController {
 
   async show({ params, response }: HttpContext) {
     try {
-      const task = await Task.findOrFail('id', params.id)
+      const task = await Task.findOrFail(params.id)
       return task
     } catch (error) {
       return response.status(400).send({ message: 'Task not found' })
@@ -32,7 +32,7 @@ export default class TasksController {
   async update({ params, request, response }: HttpContext) {
     try {
       const { title, description, done } = await request.validateUsing(updateTaskValidator)
-      const task = await Task.findOrFail('id', params.id)
+      const task = await Task.findOrFail(params.id)
       task.merge({ title, description, done })
       await task.save()
       return task
@@ -43,7 +43,7 @@ export default class TasksController {
 
   async destroy({ params, response }: HttpContext) {
     try {
-      const task = await Task.findOrFail('id', params.id)
+      const task = await Task.findOrFail(params.id)
       await task.delete()
     } catch (error) {
       return response.status(400).send({ message: 'Task not found' })
